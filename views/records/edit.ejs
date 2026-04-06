@@ -1,0 +1,94 @@
+<% layout('layouts/basicCode') %>
+
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold"> Edit Record</h2>
+        <p class="text-muted">Update your income or expense</p>
+    </div>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+
+        <form action="/records/<%= recordToEdit._id %>?_method=PUT" method="POST" class="needs-validation" novalidate>
+
+            <div class="mb-3">
+                <label for="amount" class="form-label "">Amount</label>
+                <input 
+                    type="number" 
+                    class="form-control" 
+                    id="amount" 
+                    name="amount" 
+                    value="<%= recordToEdit.amount %>" 
+                    min="0" 
+                    required>
+            </div>
+
+            <div class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <select 
+                    class="form-select" 
+                    id="type" 
+                    name="type" 
+                    required>
+
+                    <option value="Income" <%= recordToEdit.type === "Income" ? "selected" : "" %>>
+                        Income
+                    </option>
+
+                    <option value="Expense" <%= recordToEdit.type === "Expense" ? "selected" : "" %>>
+                        Expense
+                    </option>
+
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="category" 
+                    name="category" 
+                    required
+                    value="<%= recordToEdit.category %>">
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">select user</label>
+                <select 
+                    class="form-select " 
+                    id="username" 
+                    name="username" 
+                    required>
+                
+                        <option value="<%= recordToEdit.user.username %>"><%= recordToEdit.user.username %></option>
+            
+
+                </select>
+               
+            </div>
+
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea 
+                    class="form-control" 
+                    id="notes" 
+                    name="notes" 
+                    required
+                    rows="3"><%= recordToEdit.notes %></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary">
+                    Update Record
+                </button>
+
+                <a href="/records" class="btn btn-secondary">
+                    Cancel
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

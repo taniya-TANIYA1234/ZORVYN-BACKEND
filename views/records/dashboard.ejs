@@ -1,0 +1,134 @@
+<% layout('layouts/basicCode') %>
+<form action="/login/logout" method="POST" class="d-inline">
+    <button class="btn btn-outline-danger rounded-pill px-3">
+        <i class="bi bi-box-arrow-right"></i> Logout
+    </button>
+</form>
+<div class="container mt-4">
+
+    <h1 class="text-center mb-4">Dashboard</h1>
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="card text-white bg-success shadow rounded-4">
+                <div class="card-body text-center">
+                    <h5>Total Income</h5>
+                    <h3>₹ <%= totalIncome %></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-danger shadow rounded-4">
+                <div class="card-body text-center">
+                    <h5>Total Expense</h5>
+                    <h3>₹ <%= totalExpense %></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card text-white bg-dark shadow rounded-4">
+                <div class="card-body text-center">
+                    <h5>Net Balance</h5>
+                    <h3>₹ <%= netBalance %></h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="card mb-4 shadow rounded-4">
+        <div class="card-body">
+            <h4 class="mb-3">Category Wise Totals</h4>
+
+            <table class="table table-bordered table-hover text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Category</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let cat in categoryTotals){ %>
+                        <tr>
+                            <td><%= cat %></td>
+                            <td>₹ <%= categoryTotals[cat] %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card mb-4 shadow rounded-4">
+        <div class="card-body">
+            <h4 class="mb-3">Recent Activity</h4>
+
+            <table class="table table-striped table-hover text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Amount</th>
+                        <th>Type</th>
+                        <th>Category</th>
+                        <th>Notes</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% recentRecords.forEach(r => { %>
+                        <tr>
+                            <td>₹ <%= r.amount %></td>
+                            <td>
+                                <span class="badge <%= r.type === 'Income' ? 'bg-success' : 'bg-danger' %>">
+                                    <%= r.type %>
+                                </span>
+                            </td>
+                            <td><%= r.category %></td>
+                            <td><%= r.notes %></td>
+                            <td><%= new Date(r.createdAt).toDateString() %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card shadow rounded-4">
+        <div class="card-body">
+            <h4 class="mb-3">Monthly Trends</h4>
+
+            <%
+            let monthly = {};
+            records.forEach(r => {
+                let month = new Date(r.createdAt).toLocaleString('default', {
+                    month: 'short',
+                    year: 'numeric'
+                });
+
+                if (!monthly[month]) monthly[month] = 0;
+                monthly[month] += r.amount;
+            });
+            %>
+
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Month</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(let m in monthly){ %>
+                        <tr>
+                            <td><%= m %></td>
+                            <td>₹ <%= monthly[m] %></td>
+                        </tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

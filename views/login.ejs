@@ -1,0 +1,49 @@
+<% layout('layouts/basicCode') %>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-lg rounded-4">
+                <div class="card-body p-4">
+
+                    <h2 class="text-center mb-4">Login</h2>
+
+                    <form action="/login" method="POST">
+
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input 
+                                type="text" 
+                                name="username" 
+                                class="form-control" 
+                                placeholder="Enter username" 
+                                required
+                            >
+                        </div>
+
+                        
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input 
+                                type="password" 
+                                name="password" 
+                                class="form-control" 
+                                placeholder="Enter password" 
+                                required
+                            >
+                        </div> 
+
+                        <div class="d-grid">
+                            <button class="btn btn-primary">Login</button>
+                        </div>
+
+                    </form>
+                    <h6>Not Authenticate ? Sorry! Only Admin can create you ID</h6>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

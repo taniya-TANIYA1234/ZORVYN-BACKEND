@@ -1,0 +1,178 @@
+
+<% layout('layouts/basicCode') %>
+<form action="/login/logout" method="POST" class="d-inline">
+    <button class="btn btn-outline-danger rounded-pill px-3">
+        <i class="bi bi-box-arrow-right"></i> Logout
+    </button>
+</form>
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">All Users</h1>
+    </div>
+ <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped align-middle text-center bg-white shadow">
+
+            <thead class="table-dark">
+        <tr>
+            <th rowspan="1" colspan="2">Username</th>
+            <th rowspan="1" colspan="3">Email</th>
+            <th>Role</th>
+            <th>Dashboard</th>
+            <th>User</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% for(let user of users){ %>
+            <tr>
+                <td rowspan="1" colspan="2"><%= user.username %></td>
+                <td rowspan="1" colspan="3"><%= user.email %></td>
+                <td><%= user.role %></td>
+                  <td>
+                            <a href="/users/<%= user._id %>" class="btn btn-info btn-sm">
+                                View
+                            </a>
+                        </td>
+                <td>
+                    <form action="/users/<%= user._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="btn btn-danger btn-sm">
+                            Remove
+                        </button>
+                    </form>
+                </td>
+                <td>
+                   <form action="/users/<%= user._id %>/edit" method="GET">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Update
+                        </button>
+                    </form>
+                </td>
+                  
+            </tr>
+        <% } %>
+    </tbody>
+</table>
+
+<div class="container mt-4" style="max-width: 400px;">
+
+
+    <form action="/users/signup" method="get" class="bg-white p-3 border rounded">
+
+        <!-- <div class="mb-2">
+            <input type="text" name="username" class="form-control form-control-sm" placeholder="Username" required>
+        </div>
+
+        <div class="mb-2">
+            <input type="email" name="email" class="form-control form-control-sm" placeholder="Email" required>
+        </div>
+
+        <div class="mb-2">
+            <select name="role" class="form-select form-select-sm" required>
+                <option value="" disabled selected>Select role</option>
+                <option value="Admin">Admin</option>
+                <option value="Analyst">Analyst</option>
+                <option value="Viewer">Viewer</option>
+            </select>
+        </div> -->
+        
+        <button type="submit" class="btn btn-primary btn-sm w-100">
+            Create User 
+        </button>
+
+    </form>
+
+</div>
+
+ </div> 
+
+<hr>
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">All Records</h1>
+    </div>
+
+    <div class="text-end mb-3">
+        <a href="/records/create" class="btn btn-success">
+            Create New Record
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped align-middle text-center bg-white shadow">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>U_name</th>
+                    <th>Role</th>
+                    <th>Amount</th>
+                    <th>Notes</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Created At</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% for(let record of records){ %>
+                    <tr>
+                        <td>
+                          <%= record.user ? record.user.username : "No User" %>
+                            
+                        </td>
+
+                        <td>
+                            <span class="badge bg-primary">Admin</span>
+                        </td>
+
+                        <td class="fw-bold">
+                            ₹ <%= record.amount.toLocaleString("en-IN") %>
+                        </td>
+
+                        <td>
+                            <%= record.notes %>
+                        </td>
+
+                        <td>
+                            <% if(record.type === "Income"){ %>
+                                <span class="badge bg-success">Income</span>
+                            <% } else { %>
+                                <span class="badge bg-danger">Expense</span>
+                            <% } %>
+                        </td>
+
+                        <td>
+                            <%= record.category %>
+                        </td>
+
+                        <td>
+                            <%= new Date(record.createdAt).toLocaleString() %>
+                        </td>
+
+                        <td>
+                            <form action="/records/<%= record._id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+
+                        <td>
+                            <a href="/records/<%= record._id %>/edit" class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+                        </td>
+
+                    </tr>
+                <% } %>
+            </tbody>
+
+        </table>
+    </div>
+
+</div>
+
+   

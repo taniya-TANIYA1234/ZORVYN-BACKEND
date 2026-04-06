@@ -1,0 +1,92 @@
+<% layout('layouts/basicCode') %>
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold"> Create New Record</h2>
+        <p class="text-muted">Add your income or expense</p>
+    </div>
+
+    <div class="card shadow p-4 mx-auto" style="max-width: 500px;">
+        
+        <form action="/records" method="POST" class="needs-validation"  novalidate>
+
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input 
+                    type="number" 
+                    class="form-control" 
+                    id="amount" 
+                    name="amount" 
+                    min="0" 
+                    required>
+                <div class="invalid-feedback">
+                    Please enter a valid amount.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="type" class="form-label">Type</label>
+                <select 
+                    class="form-select " 
+                    id="type" 
+                    name="type" 
+                    required>
+                    <option value="Income">Income</option>
+                    <option value="Expense">Expense</option>
+                </select>
+                <div class="invalid-feedback">
+                    Please select a type.
+                    </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="category" 
+                    name="category" 
+                    required
+                    placeholder="e.g. Food, Salary">
+            </div>
+            <div class="mb-3">
+                <label for="username" class="form-label">select user</label>
+                <select 
+                    class="form-select " 
+                    id="username" 
+                    name="username" 
+                    required>
+                    <% for(let user  of users){ %>
+                        <option value="<%= user.username %>"><%= user.username %></option>
+                    <% } %>
+
+                </select>
+               
+            </div>
+
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes</label>
+                <textarea 
+                    class="form-control" 
+                    id="notes" 
+                    name="notes" 
+                    rows="3"
+                    required
+                    placeholder="Optional"></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-success">
+                    Save Record
+                </button>
+
+                <a href="/records" class="btn btn-secondary">
+                     Back
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
