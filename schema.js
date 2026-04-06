@@ -14,5 +14,5 @@ module.exports.uSchema = Joi.object({
     username: Joi.string().required(),
     email: Joi.string().email().required(),
     role: Joi.string().valid('Viewer', 'Analyst', 'Admin').required(),
-    password: Joi.string().required()
+    password: Joi.string()
 }).required();
