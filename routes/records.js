@@ -23,21 +23,23 @@ const checkViewer = (req, res, next) => {
     if(req.isAuthenticated() && req.user.role === 'Viewer'){
     req.flash('error', 'Only Admin can see records.');
     return res.redirect(`/users/${req.user._id}`);    
-}else
+}else{
     next();
+}
 };
 
 const checkAnalyst = (req, res, next) => {
     if(req.isAuthenticated() && req.user.role === 'Analyst'){
     req.flash('error', 'Only Admin can edit records.');
     return res.redirect(`/records`);    
-}else
+}else{
     next();
+}
 };
 
 // get all records for Analyst  
 router.get(
-    '/',
+    '/',checkViewer,
     wrapAsync(async (req, res)=>{
         // if(!req.isAuthenticated()){
         //     req.flash('error', 'You must be logged in to view records.');
