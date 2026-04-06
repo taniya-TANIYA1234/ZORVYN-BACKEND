@@ -5,7 +5,7 @@ const record = require('../models/record');
 const user = require('../models/user');
 const ExpressError = require('../utils/ExpressError');
 const wrapAsync = require('../utils/wrapAsync.js');
-
+const { checkViewer, checkAnalyst } = require('./records');
 // middlewares
 const validateUser = (req, res, next) => {
     let {error} = uSchema.validate(req.body);
@@ -17,10 +17,10 @@ const validateUser = (req, res, next) => {
     next();
 }};
 
-router.get('/signup', (req, res)=>{
+router.get('/signup',checkViewer,checkAnalyst, (req, res)=>{
     res.render('signup.ejs');
 });
-router.post('/signup', validateUser, wrapAsync(async (req, res) => {
+router.post('/signup', validateUser,checkViewer,checkAnalyst, wrapAsync(async (req, res) => {
 try{
     let { username, email, role , password} = req.body;
  const newUser = new user({ username, email, role });
@@ -29,7 +29,6 @@ req.flash('success', 'User created successfully!');
 res.redirect('/records');
 }catch(e){
     req.flash('error', e.message);
-    res.redirect('/users/signup');
 }
 }));
 
@@ -88,7 +87,7 @@ router.get('/:id', wrapAsync(async (req, res) => {
 
 
 
-router.post('/',validateUser , wrapAsync(async (req, res) => {
+router.post('/',validateUser ,checkViewer,checkAnalyst, wrapAsync(async (req, res) => {
     const { username, email, role } = req.body;
     if(!username && !email)  {
         req.flash('error', 'enter all details');
@@ -111,14 +110,14 @@ router.post('/',validateUser , wrapAsync(async (req, res) => {
 }));
 
 // get to update user 
-router.get('/:id/edit', wrapAsync(async (req, res) => {
+router.get('/:id/edit',checkViewer,checkAnalyst, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const userToEdit = await user.findById({ _id: id });
     res.render('users/edit.ejs', { userToEdit });
 }));
 
 // update user
-router.put('/:id/edit', validateUser, wrapAsync(async (req, res) => {
+router.put('/:id/edit', checkViewer, checkAnalyst, wrapAsync(async (req, res) => {
      const { id } = req.params;
         const userToUpdate = await user.findById({ _id: id });
     const {username , email , role } = req.body;
@@ -138,7 +137,7 @@ router.put('/:id/edit', validateUser, wrapAsync(async (req, res) => {
 }));
 
 // delete User 
-router.delete('/:id', wrapAsync(async (req, res) => {
+router.delete('/:id',checkViewer,checkAnalyst, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const deletedUser = await user.findByIdAndDelete({ _id: id });
     req.flash('success', 'User deleted successfully!');
